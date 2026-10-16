@@ -21,7 +21,7 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel, Git
 - Order volume: the number of distinct orders, with the same status filter as revenue.
 - Customer: one person, identified by customer_unique_id, because customer_id changes with every order.
 - Repeat customer: a customer with more than one order.
-- Late order: a delivered order whose actual delivery date is after its estimated delivery date.
+- Late order: a delivered order whose actual delivery date is after its estimated delivery date. Orders with status delivered but no delivery date (8) are excluded.
 - Review score: the 1-5 score in order_reviews. Category averages only include categories with at least 50 reviews.
 - Top 10% of sellers: sellers ranked by total revenue (the top 310 of 3,095, rounded).
 - Time range: orders from 2016-09-04 to 2018-10-17. The first and last months are partial and not compared with full months.
