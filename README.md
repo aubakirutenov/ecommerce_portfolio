@@ -26,8 +26,17 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel, Git
 - Top 10% of sellers: sellers ranked by total revenue (the top 310 of 3,095, rounded).
 - Time range: orders from 2016-09-04 to 2018-10-17. The first and last months are partial and not compared with full months.
 
+## Data notes
+- Orders per year: 329 in 2016, 45,101 in 2017, 54,011 in 2018. The data starts in September 2016 and ends on 2018-10-17, so the years are not directly comparable.
+- About 97% of orders are delivered (96,478). 625 are canceled and 609 unavailable, and both statuses are excluded from revenue.
+- 8 orders are marked delivered but have no delivery date.
+- 768 orders (about 0.8%) have no review.
+- 29 of 3,095 sellers sold more than 500 items.
+
 ## Status
-In progress, started October 2026. Data loaded and questions defined. SQL analysis and dashboards are next.
+In progress, started October 2026. Data loaded, questions defined, and first SQL exploration done. Monthly analysis and dashboards are next.
 
 ## Repo contents
 - 00_setup.md: how the database was set up and the data loaded.
+- 01_basics.sql: first queries (filtering, sorting, counts).
+- 02_joins_and_aggregates.sql: joins, aggregates, GROUP BY and HAVING, NULL handling.
