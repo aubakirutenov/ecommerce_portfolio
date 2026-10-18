@@ -28,7 +28,7 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel, Git
 
 ## Data notes
 - Orders per year: 329 in 2016, 45,101 in 2017, 54,011 in 2018. The data starts in September 2016 and ends on 2018-10-17, so the years are not directly comparable.
-- About 97% of orders are delivered (96,478). 625 are canceled and 609 unavailable, and both statuses are excluded from revenue.
+- About 97% of orders are delivered (96,478). 625 are canceled and 609 are unavailable, and both statuses are excluded from revenue.
 - 8 orders are marked delivered but have no delivery date.
 - 768 orders (about 0.8%) have no review.
 - 29 of 3,095 sellers sold more than 500 items.
@@ -39,4 +39,5 @@ In progress, started October 2026. Data loaded, questions defined, and first SQL
 ## Repo contents
 - 00_setup.md: how the database was set up and the data loaded.
 - 01_basics.sql: first queries (filtering, sorting, counts).
-- 02_joins_and_aggregates.sql: joins, aggregates, GROUP BY and HAVING, NULL handling.
+- 02_joins_and_aggregates.sql: joins, aggregates, GROUP BY, and HAVING, NULL handling.
+- 03_dates_and_grouping.sql: monthly trends, top categories, repeat customers, late deliveries.
