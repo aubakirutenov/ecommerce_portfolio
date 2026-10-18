@@ -29,14 +29,21 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - Time range: orders from 2016-09-04 to 2018-10-17. The first and last months are partial and not compared with full months.
 
 ## Data notes
+
+### Overview
 - Orders per year: 329 in 2016, 45,101 in 2017, 54,011 in 2018. The data starts in September 2016 and ends on 2018-10-17, so the years are not directly comparable.
-- About 97% of orders are delivered (96,478). 625 are canceled and 609 are unavailable, and both statuses are excluded from revenue.
-- 8 orders are marked delivered but have no delivery date.
-- 768 orders (about 0.8%) have no review.
+- About 97% of orders are delivered (96,478). 625 are canceled and 609 are unavailable; both statuses are excluded from revenue.
 - 29 of 3,095 sellers sold more than 500 items.
+- Payment type by item (first payment per order): credit card 85,194 (about 76%), boleto 22,867 (about 20%), voucher 2,897, debit card 1,689. Orders paid in several parts are counted under their first payment type only.
+
+### Data quality
+- 8 orders are marked delivered but have no delivery date. They are excluded from late-delivery analysis.
+- 1,627 of 112,650 items (1.4%) have no English category name: 1,603 have no category at all, and 24 have a Portuguese category missing from the translation table. They are kept and labeled "unknown".
+- 1 delivered order (placed 2016-09-15, 3 items, 134.97) has no payment record, likely a gap from the platform's first weeks. Revenue is based on item prices, so it is still counted.
+- 768 orders (about 0.8%) have no review.
 
 ## Status
-In progress, started October 2026. Data loaded, questions defined, and first SQL exploration done. Monthly analysis and dashboards are next.
+In progress, started October 2026. Data loaded and checked, monthly trends and top categories analyzed in SQL, first Tableau charts published, and Excel pivot tables built. Window functions, a star schema, and a dashboard are next.
 
 ## Repo contents
 - 00_setup.md: how the database was set up and the data loaded.
