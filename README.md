@@ -3,11 +3,13 @@
 An end-to-end analysis of an e-commerce dataset (orders, customers, products, payments). I load the raw data into PostgreSQL, answer business questions with SQL, model the data as a star schema, and present the findings in interactive Tableau dashboards.
 
 ## Dataset
-Brazilian E-Commerce Public Dataset by Olist (Kaggle): 99,441 orders placed from September 2016 to October 2018, in 9 CSV files.
-https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
+[Brazilian E-Commerce Public Dataset by Olist (Kaggle)](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce): 99,441 orders placed from September 2016 to October 2018, in 9 CSV files.
 
 ## Tools
-PostgreSQL, SQL, DBeaver, Tableau, Excel, Git
+PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
+
+## Dashboards
+[Olist E-commerce Analytics on Tableau Public](https://public.tableau.com/app/profile/aubakirutenov/viz/Olist_17923253755880/Orderspermonth): six charts covering orders, statuses, customers by state, payments, top sellers and price vs. freight.
 
 ## Business questions
 1. How did monthly revenue and order volume change over time, and when did they peak?
