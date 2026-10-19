@@ -51,4 +51,4 @@ In progress, started October 2026. Data loaded and checked, monthly trends and t
 - 02_joins_and_aggregates.sql: joins, aggregates, GROUP BY, and HAVING, NULL handling.
 - 03_dates_and_grouping.sql: monthly trends, top categories, repeat customers, late deliveries.
 - .gitignore: keeps system, Excel and data files out of the repo.
-- Tableau Public workbook: six charts on the Olist data (link in the Dashboards section).
+- Tableau Public workbook: six charts and a dashboard on the Olist data (link in the Dashboards section).
