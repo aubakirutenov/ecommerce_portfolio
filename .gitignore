@@ -1,0 +1,14 @@
+# macOS system files
+.DS_Store
+
+# Excel files and Excel temporary files
+*.xlsx
+*.xlsb
+~$*
+
+# Data exports (too large for GitHub; the data comes from Kaggle)
+*.csv
+
+# Tableau workbooks (published on Tableau Public instead)
+*.twb
+*.twbx
