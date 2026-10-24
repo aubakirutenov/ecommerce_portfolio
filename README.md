@@ -41,6 +41,7 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - 1,627 of 112,650 items (1.4%) have no English category name: 1,603 have no category at all, and 24 have a Portuguese category missing from the translation table. They are kept and labeled "unknown".
 - 1 delivered order (placed 2016-09-15, 3 items, 134.97) has no payment record, likely a gap from the platform's first weeks. Revenue is based on item prices, so it is still counted.
 - 768 orders (about 0.8%) have no review.
+- 278 customers (about 0.3%) have a zip code prefix that is missing from the geolocation table, so they cannot be placed on a map.
 
 ## Status
 In progress, started October 2026. Data loaded and checked, monthly trends and top categories analyzed in SQL, first Tableau charts published, and Excel pivot tables built. Window functions, a star schema, and a dashboard are next.
@@ -52,3 +53,4 @@ In progress, started October 2026. Data loaded and checked, monthly trends and t
 - 03_dates_and_grouping.sql: monthly trends, top categories, repeat customers, late deliveries.
 - .gitignore: keeps system, Excel and data files out of the repo.
 - Tableau Public workbook: six charts and a dashboard on the Olist data (link in the Dashboards section).
+- 04_drills.sql: drills on GROUP BY, WHERE vs. HAVING, FILTER and anti-joins.
