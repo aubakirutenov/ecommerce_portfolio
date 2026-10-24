@@ -43,6 +43,9 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - 768 orders (about 0.8%) have no review.
 - 278 customers (about 0.3%) have a zip code prefix that is missing from the geolocation table, so they cannot be placed on a map.
 
+## Key findings
+- Only 3.1% of customers order more than once, and the rate is low in every state (1.7–3.4%).
+
 ## Status
 In progress, started October 2026. Data loaded and checked, monthly trends and top categories analyzed in SQL, first Tableau charts published, and Excel pivot tables built. Window functions, a star schema, and a dashboard are next.
 
