@@ -58,3 +58,4 @@ In progress, started October 2026. Data loaded and checked, monthly trends and t
 - Tableau Public workbook: six charts and a dashboard on the Olist data (link in the Dashboards section).
 - 04_drills.sql: drills on GROUP BY, WHERE vs. HAVING, FILTER and anti-joins.
 - Sprint 2 repeated from Mon Oct 26 to strengthen SQL, Git and Tableau basics.
+- 04_drills_v2.sql: second round of SQL drills.
