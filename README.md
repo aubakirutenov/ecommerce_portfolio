@@ -11,6 +11,8 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 ## Dashboards
 [Olist E-commerce Analytics on Tableau Public](https://public.tableau.com/app/profile/aubakirutenov/viz/Olist_17923253755880/Orderspermonth): six charts covering orders, statuses, customers by state, payments, top sellers and price vs. freight.
 
+[Olist Star Schema Dashboard](https://public.tableau.com/app/profile/aubakirutenov/viz/OlistStarSchemaDashboard/Olistrevenueoverview)
+
 ## Business questions
 1. How did monthly revenue and order volume change over time, and when did they peak?
 2. Which product categories bring in the most revenue, and which earn the best review scores?
