@@ -44,6 +44,16 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - 278 customers (about 0.3%) have a zip code prefix that is missing from the geolocation table, so they cannot be placed on a map.
 
 ## Key findings
+### 1. Revenue trend
+- Over the 20 full months (Jan 2017 – Aug 2018), revenue totals **13.45M**
+  (item prices, canceled and unavailable orders excluded).
+- 2017 grows almost every month, from 120K in January to a peak of **1.00M in November 2017**
+  (**+52.1%** month over month, driven by Black Friday on 24 Nov), followed by a drop in December (-26.1%).
+- 2018 is flat: monthly revenue stays at roughly 0.84–0.99M, with month-over-month changes
+  between -13.1% and +17.1%, so growth stopped after 2017.
+- Partial months (before Jan 2017 and after Aug 2018) are excluded; comparing them with full months
+  would show fake jumps and a fake collapse.
+  Query: `06_window_functions_v2.sql`, steps 2–3.
 ### 3. Repeat customers
 - Only **3.0%** of customers come back: 2,888 of 94,990 placed more than one order
   (canceled and unavailable orders excluded). Most repeat customers ordered just twice (2,652).
