@@ -94,6 +94,16 @@ erDiagram
         numeric freight_value
     }
 ```
+The raw tables are reorganized into a star schema in a separate `mart` schema, built by `08_star_schema.sql`.
+
+- **Grain:** one row of `fact_order_items` is one order item (order_id + order_item_id), because price and seller belong to the item, not the order.
+- **Measures:** price and freight_value.
+- **Dimensions:** seller, customer, product and date. The date dimension has one row per day (2016-09-01 to 2018-10-31) with year, quarter, month and weekday precomputed.
+- **Order attributes:** order_id and order_status stay in the fact table instead of a separate orders table (degenerate dimensions). All statuses are kept; reports exclude canceled and unavailable orders by filtering on order_status.
+- dim_customer stays at customer_id level because the address belongs to each order; people are counted with customer_unique_id.
+- Products without an English category are labeled "unknown" (623 products).
+- **Tests:** every dimension key is unique, no fact row is orphaned (0 for all four dimensions), joining the fact to all dimensions keeps all 112,650 rows, and revenue matches the earlier analysis to the cent (13,494,400.74).
+- Payments and reviews are recorded per order, not per item, so they are not in this fact table; they would become separate fact tables at order grain.
 
 ## Key findings
 ### 1. Revenue trend
@@ -141,6 +151,7 @@ float to numeric for exact totals. A star schema, the remaining questions and a 
 - 05_ctes_v2.sql: subqueries and chained CTEs; answers question 3.
 - 06_window_functions_v2.sql: SUM() OVER, LAG, running totals, RANK vs. ROW_NUMBER; answers question 1.
 - 07_question5_v2.sql: NTILE deciles; answers question 5.
+- 08_star_schema.sql: builds the star schema (4 dimensions, 1 fact table) and tests it.
 - .gitignore: keeps system, Excel and data files out of the repo.
 - Tableau Public workbook: six charts and a dashboard on the Olist data (link in the Dashboards section).
 
