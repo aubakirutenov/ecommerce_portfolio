@@ -45,6 +45,56 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - 768 orders (about 0.8%) have no review.
 - 278 customers (about 0.3%) have a zip code prefix that is missing from the geolocation table, so they cannot be placed on a map.
 
+## Data model
+```mermaid
+erDiagram
+    dim_seller ||--o{ fact_order_items : "seller_id"
+
+    dim_seller {
+        text seller_id PK
+        text seller_city
+        text seller_state
+    }
+
+    dim_customer ||--o{ fact_order_items : "customer_id"
+    dim_customer {
+        text customer_id PK
+        text customer_unique_id
+        text customer_city
+        text customer_state
+    }
+
+    dim_product ||--o{ fact_order_items : "product_id"
+    dim_product {
+        text product_id PK
+        text product_category_name
+        text product_category_name_english
+    }
+
+    dim_date ||--o{ fact_order_items : "purchase_date"
+    dim_date {
+        date date PK
+        int year
+        int quarter
+        int month
+        text month_name
+        text year_month
+        text weekday_name
+    }
+
+    fact_order_items {
+        text order_id PK
+        int order_item_id PK
+        text seller_id FK
+        text product_id FK
+        text customer_id FK
+        date purchase_date FK
+        text order_status
+        numeric price
+        numeric freight_value
+    }
+```
+
 ## Key findings
 ### 1. Revenue trend
 - Over the 20 full months (Jan 2017 – Aug 2018), revenue totals **13.45M**
