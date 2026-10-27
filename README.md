@@ -25,7 +25,9 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - Repeat customer: a customer with more than one order, counting only orders that are not canceled or unavailable (the same filter as order volume).
 - Late order: a delivered order whose actual delivery date is after its estimated delivery date. Orders with status delivered but no delivery date (8) are excluded.
 - Review score: the 1-5 score in order_reviews. Category averages only include categories with at least 50 reviews.
-- Top 10% of sellers: sellers ranked by total revenue (the top 310 of 3,095, rounded).
+- Top 10% of sellers: the 3,053 sellers with revenue are ranked by total revenue and split into
+  10 equal groups (NTILE); the top group holds 306 sellers. 42 of the 3,095 sellers are not ranked
+  because all their orders were canceled or unavailable, so they have no revenue.
 - Time range: orders from 2016-09-04 to 2018-10-17. The first and last months are partial and not compared with full months.
 
 ## Data notes
@@ -58,23 +60,38 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - Only **3.0%** of customers come back: 2,888 of 94,990 placed more than one order
   (canceled and unavailable orders excluded). Most repeat customers ordered just twice (2,652).
 - Among the 12 states with at least 1,000 customers, the repeat share ranges from
-  **1.6% (CE) to 3.3% (RJ)**; SP, with 40% of all customers, is at 3.1%.
+  **1.6% (CE) to 3.3% (RJ)**; SP, with 42% of all customers, is at 3.1%.
 - No large state stands out, so low retention is a platform-wide pattern, not a regional one.
 - Small states show higher shares (AC 5.2%), but these rest on a handful of customers
   and are not reliable, so states under 1,000 customers are left out of the comparison.
 - Assumption: a customer who ordered from two states counts once in each.
   Query: `05_ctes_v2.sql`, step 5.
+### 5. Top 10% of sellers
+- The top 10% of sellers (306) bring **67.5%** of revenue (9.11M of 13.49M, all months);
+  the top 20% bring 82.6%, while the bottom half of sellers brings only 3.3%.
+- Top sellers sit where most sellers are: **61%** are in SP, close to SP's 60% share of all sellers.
+- MG punches above its weight: 12.9% of its sellers are top sellers, against 10% overall.
+  RJ (8.8%) and SC (8.6%) are slightly below.
+- States with only a few sellers (e.g. MA with 1) are left out of the comparison.
+  Query: `07_question5_v2.sql`, steps 2–3.
 
 ## Status
-In progress, started October 2026. Data loaded and checked, monthly trends and top categories analyzed in SQL, first Tableau charts published, and Excel pivot tables built. Window functions, a star schema, and a dashboard are next.
+In progress, started October 2026. Sprint 2 (second round): SQL drills, CTEs and window functions
+are done, and questions 1, 3 and 5 are answered in Key findings. Money columns were converted from
+float to numeric for exact totals. A star schema, the remaining questions and a Tableau dashboard are next.
 
 ## Repo contents
-- 00_setup.md: how the database was set up and the data loaded.
+- 00_setup.md: how the database was set up, the data loaded, and the money column type fix.
 - 01_basics.sql: first queries (filtering, sorting, counts).
-- 02_joins_and_aggregates.sql: joins, aggregates, GROUP BY, and HAVING, NULL handling.
+- 02_joins_and_aggregates.sql: joins, aggregates, GROUP BY and HAVING, NULL handling.
 - 03_dates_and_grouping.sql: monthly trends, top categories, repeat customers, late deliveries.
+- 04_drills.sql: drills on GROUP BY, WHERE vs. HAVING, FILTER and anti-joins (first round).
+- 04_drills_v2.sql: second round of SQL drills with new tasks.
+- 05_ctes.sql: CTEs and subqueries (first round).
+- 05_ctes_v2.sql: subqueries and chained CTEs; answers question 3.
+- 06_window_functions_v2.sql: SUM() OVER, LAG, running totals, RANK vs. ROW_NUMBER; answers question 1.
+- 07_question5_v2.sql: NTILE deciles; answers question 5.
 - .gitignore: keeps system, Excel and data files out of the repo.
 - Tableau Public workbook: six charts and a dashboard on the Olist data (link in the Dashboards section).
-- 04_drills.sql: drills on GROUP BY, WHERE vs. HAVING, FILTER and anti-joins.
-- Sprint 2 repeated from Mon Oct 26 to strengthen SQL, Git and Tableau basics.
-- 04_drills_v2.sql: second round of SQL drills.
+
+Sprint 2 was repeated from Oct 26 to strengthen SQL, Git and Tableau basics; `_v2` files are the second round.
