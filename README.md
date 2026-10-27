@@ -44,7 +44,16 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - 278 customers (about 0.3%) have a zip code prefix that is missing from the geolocation table, so they cannot be placed on a map.
 
 ## Key findings
-- Only 3.1% of customers order more than once, and the rate is low in every state (1.7–3.4%).
+### 3. Repeat customers
+- Only **3.0%** of customers come back: 2,888 of 94,990 placed more than one order
+  (canceled and unavailable orders excluded). Most repeat customers ordered just twice (2,652).
+- Among the 12 states with at least 1,000 customers, the repeat share ranges from
+  **1.6% (CE) to 3.3% (RJ)**; SP, with 40% of all customers, is at 3.1%.
+- No large state stands out, so low retention is a platform-wide pattern, not a regional one.
+- Small states show higher shares (AC 5.2%), but these rest on a handful of customers
+  and are not reliable, so states under 1,000 customers are left out of the comparison.
+- Assumption: a customer who ordered from two states counts once in each.
+  Query: `05_ctes_v2.sql`, step 5.
 
 ## Status
 In progress, started October 2026. Data loaded and checked, monthly trends and top categories analyzed in SQL, first Tableau charts published, and Excel pivot tables built. Window functions, a star schema, and a dashboard are next.
