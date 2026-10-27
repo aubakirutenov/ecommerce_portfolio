@@ -22,7 +22,7 @@ PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 - Revenue: the sum of item prices (price in order_items), excluding shipping, for orders whose status is not canceled or unavailable.
 - Order volume: the number of distinct orders, with the same status filter as revenue.
 - Customer: one person, identified by customer_unique_id, because customer_id changes with every order.
-- Repeat customer: a customer with more than one order.
+- Repeat customer: a customer with more than one order, counting only orders that are not canceled or unavailable (the same filter as order volume).
 - Late order: a delivered order whose actual delivery date is after its estimated delivery date. Orders with status delivered but no delivery date (8) are excluded.
 - Review score: the 1-5 score in order_reviews. Category averages only include categories with at least 50 reviews.
 - Top 10% of sellers: sellers ranked by total revenue (the top 310 of 3,095, rounded).
