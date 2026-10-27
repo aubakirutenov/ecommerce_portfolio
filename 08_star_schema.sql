@@ -59,10 +59,47 @@ SELECT SUM(price)
 FROM mart.fact_order_items
 WHERE order_status NOT IN ('canceled', 'unavailable');
 
+-- Test 1: dimension keys are unique (rows_total must equal keys_unique).
+SELECT COUNT(*) AS rows_total, COUNT(DISTINCT seller_id) AS keys_unique
+FROM mart.dim_seller;
 
+SELECT COUNT(*) AS rows_total, COUNT(DISTINCT customer_id) AS keys_unique
+FROM mart.dim_customer;
 
+SELECT COUNT(*) AS rows_total, COUNT(DISTINCT product_id) AS keys_unique
+FROM mart.dim_product;
 
+SELECT COUNT(*) AS rows_total, COUNT(DISTINCT date) AS keys_unique
+FROM mart.dim_date;
 
+-- Test 2: no orphans (every fact row finds its dimension row; each query must return 0).
 
+SELECT COUNT(*) AS orphans
+FROM mart.fact_order_items f
+LEFT JOIN mart.dim_seller s ON f.seller_id = s.seller_id
+WHERE s.seller_id IS NULL;
 
+SELECT COUNT(*) AS orphans
+FROM mart.fact_order_items f
+LEFT JOIN mart.dim_customer c ON f.customer_id = c.customer_id
+WHERE c.customer_id IS NULL;
 
+SELECT COUNT(*) AS orphans
+FROM mart.fact_order_items f
+LEFT JOIN mart.dim_product p ON f.product_id = p.product_id
+WHERE p.product_id IS NULL;
+
+SELECT COUNT(*) AS orphans
+FROM mart.fact_order_items f
+LEFT JOIN mart.dim_date d ON f.purchase_date = d.date
+WHERE d.date IS NULL;
+
+-- Final check: fact joined to all 4 dimensions keeps all 112,650 rows.
+
+SELECT COUNT(*)
+FROM mart.fact_order_items f
+JOIN mart.dim_seller s   ON f.seller_id = s.seller_id
+JOIN mart.dim_customer c ON f.customer_id = c.customer_id
+JOIN mart.dim_product p  ON f.product_id = p.product_id
+JOIN mart.dim_date d     ON f.purchase_date = d.date;
+-- Validation: revenue (not canceled/unavailable) = 13,494,400.74, the same as 07_question5_v2.sql.
