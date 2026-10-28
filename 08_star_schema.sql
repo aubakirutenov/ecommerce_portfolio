@@ -59,6 +59,30 @@ SELECT SUM(price)
 FROM mart.fact_order_items
 WHERE order_status NOT IN ('canceled', 'unavailable');
 
+DROP TABLE IF EXISTS mart.fact_orders;
+CREATE TABLE mart.fact_orders AS
+WITH reviews AS (
+    SELECT order_id, AVG(review_score) AS review_score
+    FROM olist.order_reviews
+    GROUP BY order_id
+)
+SELECT
+    o.order_id,
+    o.customer_id,
+    o.order_purchase_timestamp::date AS purchase_date,
+    o.order_status,
+    o.order_delivered_customer_date::date AS delivered_date,
+    o.order_estimated_delivery_date::date AS estimated_date,
+    CASE
+        WHEN o.order_delivered_customer_date::date >  o.order_estimated_delivery_date::date AND o.order_status = 'delivered' THEN 1   -- delivered, has a delivery date, and delivered after the estimate
+        WHEN o.order_delivered_customer_date::date <=  o.order_estimated_delivery_date::date AND o.order_status = 'delivered' THEN 0   -- delivered, has a delivery date, and on time
+    END AS is_late,
+    r.review_score
+FROM olist.orders o
+LEFT JOIN reviews r ON o.order_id = r.order_id;
+SELECT COUNT(*), COUNT(DISTINCT order_id), COUNT(is_late),
+       ROUND(100.0 * AVG(is_late), 2) AS late_pct
+FROM mart.fact_orders;
 -- Test 1: dimension keys are unique (rows_total must equal keys_unique).
 SELECT COUNT(*) AS rows_total, COUNT(DISTINCT seller_id) AS keys_unique
 FROM mart.dim_seller;
@@ -103,3 +127,14 @@ JOIN mart.dim_customer c ON f.customer_id = c.customer_id
 JOIN mart.dim_product p  ON f.product_id = p.product_id
 JOIN mart.dim_date d     ON f.purchase_date = d.date;
 -- Validation: revenue (not canceled/unavailable) = 13,494,400.74, the same as 07_question5_v2.sql.
+
+-- fact_orders tests: no orphans for dim_customer and dim_date (both must return 0).
+SELECT COUNT(*) AS orphans
+FROM mart.fact_orders ord
+LEFT JOIN mart.dim_customer c ON ord.customer_id = c.customer_id
+WHERE c.customer_id IS NULL;
+
+SELECT COUNT(*) AS orphans
+FROM mart.fact_orders ord
+LEFT JOIN mart.dim_date d ON ord.purchase_date = d.date
+WHERE d.date IS NULL;
