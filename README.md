@@ -95,6 +95,19 @@ erDiagram
         numeric price
         numeric freight_value
     }
+
+   dim_customer ||--o{ fact_orders : "customer_id"
+   dim_date ||--o{ fact_orders : "purchase_date"
+   fact_orders {
+       text order_id PK
+       text customer_id FK
+       date purchase_date FK
+       text order_status
+       date delivered_date
+       date estimated_date
+       int is_late
+       numeric review_score
+   }
 ```
 The raw tables are reorganized into a star schema in a separate `mart` schema, built by `08_star_schema.sql`.
 
@@ -105,7 +118,7 @@ The raw tables are reorganized into a star schema in a separate `mart` schema, b
 - dim_customer stays at customer_id level because the address belongs to each order; people are counted with customer_unique_id.
 - Products without an English category are labeled "unknown" (623 products).
 - **Tests:** every dimension key is unique, no fact row is orphaned (0 for all four dimensions), joining the fact to all dimensions keeps all 112,650 rows, and revenue matches the earlier analysis to the cent (13,494,400.74).
-- Payments and reviews are recorded per order, not per item, so they are not in this fact table; they would become separate fact tables at order grain.
+- **fact_orders** is a second fact table at order grain (99,441 rows) for delivery and reviews, which belong to the order, not the item. It shares dim_customer and dim_date with fact_order_items (a fact constellation). Reviews are averaged per order (some orders have several).
 
 ## Key findings
 ### 1. Revenue trend
@@ -128,6 +141,17 @@ The raw tables are reorganized into a star schema in a separate `mart` schema, b
   and are not reliable, so states under 1,000 customers are left out of the comparison.
 - Assumption: a customer who ordered from two states counts once in each.
   Query: `05_ctes_v2.sql`, step 5.
+### 4. Late deliveries and reviews
+- **6.77%** of delivered orders arrive after the estimated delivery date (6,534 of 96,470; a delivery
+  on the estimated day counts as on time).
+- Among the 12 states with at least 1,000 delivered orders, the late share ranges from **4.0% (PR)**
+  to **13.8% (CE)**. The northeast is worst (CE 13.8%, BA 12.2%, PE 9.6%), and **RJ** stands out at
+  12.1% on 12,350 orders, almost three times SP's 4.5%.
+- Late orders get much worse reviews: **2.27 stars vs. 4.29** for on-time orders, a drop of about 2 stars
+  (based on 6,381 and 89,443 reviewed orders).
+- Delivery is therefore a direct driver of customer satisfaction; improving RJ and the northeast
+  would affect the most customers.
+  Query: `09_question4.sql`, built on `mart.fact_orders`.
 ### 5. Top 10% of sellers
 - The top 10% of sellers (306) bring **67.5%** of revenue (9.11M of 13.49M, all months);
   the top 20% bring 82.6%, while the bottom half of sellers brings only 3.3%.
