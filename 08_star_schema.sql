@@ -36,29 +36,6 @@ SELECT COUNT(*) FROM mart.dim_date;
 SELECT * FROM mart.dim_date WHERE date = '2017-11-24';
 SELECT COUNT(DISTINCT year_month) FROM mart.dim_date;
 
-DROP TABLE IF EXISTS mart.fact_order_items;
-CREATE TABLE mart.fact_order_items AS
-SELECT
-	oi.order_id,
-	oi.order_item_id,
-	oi.product_id,
-	oi.seller_id,
-	o.customer_id,
-	o.order_status,
-	o.order_purchase_timestamp::date AS purchase_date,
-	oi.price,
-	oi.freight_value
-FROM
-	olist.order_items oi
-JOIN olist.orders o
-ON
-	oi.order_id = o.order_id;
-SELECT COUNT(*) FROM mart.fact_order_items;
-SELECT pg_typeof(purchase_date) FROM mart.fact_order_items LIMIT 1;
-SELECT SUM(price)
-FROM mart.fact_order_items
-WHERE order_status NOT IN ('canceled', 'unavailable');
-
 DROP TABLE IF EXISTS mart.fact_orders;
 CREATE TABLE mart.fact_orders AS
 WITH reviews AS (
@@ -83,6 +60,35 @@ LEFT JOIN reviews r ON o.order_id = r.order_id;
 SELECT COUNT(*), COUNT(DISTINCT order_id), COUNT(is_late),
        ROUND(100.0 * AVG(is_late), 2) AS late_pct
 FROM mart.fact_orders;
+
+-- is_late copied from fact_orders: every item of a late order counts as late
+-- (an order with several sellers counts as late for each of them).
+DROP TABLE IF EXISTS mart.fact_order_items;
+CREATE TABLE mart.fact_order_items AS
+SELECT
+	oi.order_id,
+	oi.order_item_id,
+	oi.product_id,
+	oi.seller_id,
+	o.customer_id,
+	o.order_status,
+	o.order_purchase_timestamp::date AS purchase_date,
+	oi.price,
+	oi.freight_value,
+	fo.is_late
+FROM
+	olist.order_items oi
+JOIN olist.orders o
+ON
+	oi.order_id = o.order_id
+LEFT JOIN mart.fact_orders fo ON oi.order_id = fo.order_id;
+
+SELECT COUNT(*) FROM mart.fact_order_items;
+SELECT pg_typeof(purchase_date) FROM mart.fact_order_items LIMIT 1;
+SELECT SUM(price)
+FROM mart.fact_order_items
+WHERE order_status NOT IN ('canceled', 'unavailable');
+
 -- Test 1: dimension keys are unique (rows_total must equal keys_unique).
 SELECT COUNT(*) AS rows_total, COUNT(DISTINCT seller_id) AS keys_unique
 FROM mart.dim_seller;
