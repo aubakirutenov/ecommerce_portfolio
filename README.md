@@ -162,6 +162,15 @@ The raw tables are reorganized into a star schema in a separate `mart` schema, b
   RJ (8.8%) and SC (8.6%) are slightly below.
 - States with only a few sellers (e.g. MA with 1) are left out of the comparison.
   Query: `07_question5_v2.sql`, steps 2–3.
+- Do the top sellers deliver better? Slightly worse: 7.0% of their delivered orders arrive late
+  vs. 6.4% for all other sellers.
+- Geography does not explain the gap: within the Southeast (69% of delivered orders) and the South,
+  top sellers are still about 0.5 points later than the rest. In the Northeast both groups are equally
+  late (12.7%), so lateness there is a regional logistics problem, not a seller problem.
+- The difference is small compared with the gap between states (4% to 14%), so the region where the
+  customer lives matters far more than which seller ships the order.
+- Assumption: an order with items from several sellers counts as late for each of them.
+  Tableau sheet: "Top sellers vs. the rest" (set of the top 306 sellers by revenue).
 
 ## Status
 In progress, started October 2026. Sprint 2 (second round): SQL drills, CTEs and window functions
