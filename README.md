@@ -9,8 +9,6 @@ An end-to-end analysis of an e-commerce dataset (orders, customers, products, pa
 PostgreSQL, SQL, DBeaver, Tableau, Excel (pivot tables), Git
 
 ## Dashboards
-[Olist E-commerce Analytics on Tableau Public](https://public.tableau.com/app/profile/aubakirutenov/viz/Olist_17923253755880/Orderspermonth): six charts covering orders, statuses, customers by state, payments, top sellers and price vs. freight.
-
 [Olist revenue overview](https://public.tableau.com/app/profile/aubakirutenov/viz/OlistStarSchemaDashboard/Olistrevenueoverview)
 
 [Olist delivery and reviews](https://public.tableau.com/app/profile/aubakirutenov/viz/OlistStarSchemaDashboard/Olistdeliveryandreviews)
