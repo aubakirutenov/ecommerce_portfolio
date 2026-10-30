@@ -1,4 +1,4 @@
-07_question5_v2.sql-- Question 5: What share of revenue comes from the top 10% of sellers, and which states are those sellers in?
+-- Question 5: What share of revenue comes from the top 10% of sellers, and which states are those sellers in?
 -- Revenue = item prices of orders that are not canceled or unavailable (all months).
 
 --1. Revenue per seller, plus each seller’s decile, with a check of the group sizes.
@@ -89,7 +89,7 @@ ORDER BY
 	decile ASC;
 -- Result: the top 10% of sellers (decile 1, 306 sellers) bring 67.5% of revenue (9.11M of 13.49M).
 -- The top 20% bring 82.6%; the bottom half (deciles 6-10, about 1,525 sellers) only 3.3%.
--- Total is 13.49M, not 13.45M as in 06_window_functions_v2.sql, because all months are included here.
+-- Total is 13.49M, not 13.45M as in q1_revenue_trend.sql, because all months are included here.
 -- SUM(SUM(revenue)) OVER (): the inner SUM is the GROUP BY aggregate, the outer one the window total.
 
 --3. Where the top-decile sellers are: their states, compared with all sellers

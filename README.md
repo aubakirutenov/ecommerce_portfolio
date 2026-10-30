@@ -111,7 +111,7 @@ erDiagram
        numeric review_score
    }
 ```
-The raw tables are reorganized into a star schema in a separate `mart` schema, built by `08_star_schema.sql`.
+The raw tables are reorganized into a star schema in a separate `mart` schema, built by `sql/01_star_schema.sql`.
 
 - **Grain:** one row of `fact_order_items` is one order item (order_id + order_item_id), because price and seller belong to the item, not the order.
 - **Measures:** price and freight_value.
@@ -132,7 +132,7 @@ The raw tables are reorganized into a star schema in a separate `mart` schema, b
   between -13.1% and +17.1%, so growth stopped after 2017.
 - Partial months (before Jan 2017 and after Aug 2018) are excluded; comparing them with full months
   would show fake jumps and a fake collapse.
-  Query: `06_window_functions_v2.sql`, steps 2–3.
+  Query: `sql/q1_revenue_trend.sql`, steps 2–3.
 ### 3. Repeat customers
 - Only **3.0%** of customers come back: 2,888 of 94,990 placed more than one order
   (canceled and unavailable orders excluded). Most repeat customers ordered just twice (2,652).
@@ -142,7 +142,7 @@ The raw tables are reorganized into a star schema in a separate `mart` schema, b
 - Small states show higher shares (AC 5.2%), but these rest on a handful of customers
   and are not reliable, so states under 1,000 customers are left out of the comparison.
 - Assumption: a customer who ordered from two states counts once in each.
-  Query: `05_ctes_v2.sql`, step 5.
+  Query: `sql/q3_repeat_customers.sql`, step 5.
 ### 4. Late deliveries and reviews
 - **6.77%** of delivered orders arrive after the estimated delivery date (6,534 of 96,470; a delivery
   on the estimated day counts as on time).
@@ -153,7 +153,7 @@ The raw tables are reorganized into a star schema in a separate `mart` schema, b
   (based on 6,381 and 89,443 reviewed orders).
 - Delivery is therefore a direct driver of customer satisfaction; improving RJ and the northeast
   would affect the most customers.
-  Query: `09_question4.sql`, built on `mart.fact_orders`.
+  Query: `sql/q4_late_deliveries.sql`, built on `mart.fact_orders`.
 ### 5. Top 10% of sellers
 - The top 10% of sellers (306) bring **67.5%** of revenue (9.11M of 13.49M, all months);
   the top 20% bring 82.6%, while the bottom half of sellers brings only 3.3%.
@@ -161,7 +161,7 @@ The raw tables are reorganized into a star schema in a separate `mart` schema, b
 - MG punches above its weight: 12.9% of its sellers are top sellers, against 10% overall.
   RJ (8.8%) and SC (8.6%) are slightly below.
 - States with only a few sellers (e.g. MA with 1) are left out of the comparison.
-  Query: `07_question5_v2.sql`, steps 2–3.
+  Query: `sql/q5_top_sellers.sql`, steps 2–3.
 - Do the top sellers deliver better? Slightly worse: 7.0% of their delivered orders arrive late
   vs. 6.4% for all other sellers.
 - Geography does not explain the gap: within the Southeast (69% of delivered orders) and the South,
@@ -173,23 +173,18 @@ The raw tables are reorganized into a star schema in a separate `mart` schema, b
   Tableau sheet: "Top sellers vs. the rest" (set of the top 306 sellers by revenue).
 
 ## Status
-In progress, started October 2026. Sprint 2 (second round): SQL drills, CTEs and window functions
-are done, and questions 1, 3 and 5 are answered in Key findings. Money columns were converted from
-float to numeric for exact totals. A star schema, the remaining questions and a Tableau dashboard are next.
+In progress, started October 2026. Done: the star schema with two fact tables and model tests,
+questions 1, 3, 4 and 5 (see Key findings) and two Tableau dashboards. Money columns were converted
+from float to numeric for exact totals. Next: question 2, rebuilding the star schema as tested
+dbt models, and a Power BI version of the dashboards.
 
 ## Repo contents
-- 00_setup.md: how the database was set up, the data loaded, and the money column type fix.
-- 01_basics.sql: first queries (filtering, sorting, counts).
-- 02_joins_and_aggregates.sql: joins, aggregates, GROUP BY and HAVING, NULL handling.
-- 03_dates_and_grouping.sql: monthly trends, top categories, repeat customers, late deliveries.
-- 04_drills.sql: drills on GROUP BY, WHERE vs. HAVING, FILTER and anti-joins (first round).
-- 04_drills_v2.sql: second round of SQL drills with new tasks.
-- 05_ctes.sql: CTEs and subqueries (first round).
-- 05_ctes_v2.sql: subqueries and chained CTEs; answers question 3.
-- 06_window_functions_v2.sql: SUM() OVER, LAG, running totals, RANK vs. ROW_NUMBER; answers question 1.
-- 07_question5_v2.sql: NTILE deciles; answers question 5.
-- 08_star_schema.sql: builds the star schema (4 dimensions, 1 fact table) and tests it.
-- .gitignore: keeps system, Excel and data files out of the repo.
-- Tableau Public workbook: six charts and a dashboard on the Olist data (link in the Dashboards section).
-
-Sprint 2 was repeated from Oct 26 to strengthen SQL, Git and Tableau basics; `_v2` files are the second round.
+- `setup.md`: how the database was set up, the data loaded, and the money column type fix.
+- `sql/`: the project.
+  - `01_star_schema.sql`: builds the star schema (4 dimensions, 2 fact tables) in the `mart` schema and tests it.
+  - `q1_revenue_trend.sql`: window functions (SUM() OVER, LAG, running totals, RANK vs. ROW_NUMBER); answers question 1.
+  - `q3_repeat_customers.sql`: subqueries and chained CTEs; answers question 3.
+  - `q4_late_deliveries.sql`: late deliveries by state and their effect on reviews; answers question 4.
+  - `q5_top_sellers.sql`: seller revenue deciles with NTILE; answers question 5.
+- `practice/`: SQL exercises written while learning (basics, joins, dates, drills and CTEs; `round1` and `round2` are two rounds of the same topic).
+- `.gitignore`: keeps system, Excel and data files out of the repo.

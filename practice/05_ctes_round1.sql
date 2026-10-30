@@ -1,4 +1,4 @@
--- 05_ctes.sql
+-- 05_ctes_round1.sql
 -- Business question 3: what share of customers order more than once, and does it differ by state?
 -- A customer is one person (customer_unique_id), because customer_id changes with every order.
 

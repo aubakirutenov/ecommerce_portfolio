@@ -1,4 +1,4 @@
--- 04_drills.sql
+-- 04_drills_round1.sql
 -- SQL drills on four concepts: the GROUP BY rule, WHERE vs. HAVING, FILTER,
 -- and LEFT JOIN direction (anti-joins). Data: Olist e-commerce dataset.
 

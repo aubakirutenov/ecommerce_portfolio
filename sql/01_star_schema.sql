@@ -132,7 +132,7 @@ JOIN mart.dim_seller s   ON f.seller_id = s.seller_id
 JOIN mart.dim_customer c ON f.customer_id = c.customer_id
 JOIN mart.dim_product p  ON f.product_id = p.product_id
 JOIN mart.dim_date d     ON f.purchase_date = d.date;
--- Validation: revenue (not canceled/unavailable) = 13,494,400.74, the same as 07_question5_v2.sql.
+-- Validation: revenue (not canceled/unavailable) = 13,494,400.74, the same as q5_top_sellers.sql.
 
 -- fact_orders tests: no orphans for dim_customer and dim_date (both must return 0).
 SELECT COUNT(*) AS orphans
